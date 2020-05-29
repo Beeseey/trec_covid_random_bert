@@ -10,7 +10,7 @@ from tensorflow.keras.layers import Dropout, Flatten, RepeatVector, TimeDistribu
 from tensorflow.keras.layers import add
 from tensorflow.keras.optimizers import Adam
 import keras
-from parse_data_bert import get_data
+from parse_data_bert_3 import get_data
 import os
 import random
 
