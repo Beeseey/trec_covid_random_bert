@@ -42,11 +42,10 @@ def read_metadata(csv_file_path):
 				data_object['publish_time'] = row[9]
 				data_object['authors'] = row[10]
 				data_object['journal'] = row[11]
-				data_object['microsoft_id'] = row[12]
-				data_object['who_covidence'] = row[13]
-				data_object['has_pdf'] = row[14]
-				data_object['has_pmc'] = row[15]
-				data_object['full_text_file'] = row[16]
+				#data_object['who_covidence'] = row[13]
+				data_object['has_pdf'] = row[15]
+				data_object['has_pmc'] = row[16]
+				#data_object['full_text_file'] = row[16]
 				data_object['url'] = row[17]
 				data_dict[row[0]] = data_object
 				
