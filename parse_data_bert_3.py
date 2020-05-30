@@ -166,34 +166,33 @@ def read_corpus(docids,metadata_dict,path_dict):
 
 
 		if inMetadataFile:
-			abstract = data_object_dict['abstract']
-			title = data_object_dict['title']
-			sections,body,ref_texts = '','',''
+			if 'document_parses' in data_object_dict['has_pdf'] or 'document_parses' in data_object_dict['has_pmc']:
+				abstract = data_object_dict['abstract']
+				title = data_object_dict['title']
+				sections,body,ref_texts = '','',''
 		
-			if data_object_dict['has_pdf'] != '':
+				if 'document_parses' in data_object_dict['has_pdf']:
 		
-				#json_file_path = path_dict[data_object_dict['sha']]
-				if ';' in data_object_dict['has_pdf']:
-					data_object_dict['has_pdf'] = data_object_dict['has_pdf'].split('; ')[1]
-					#print(data_object_dict['has_pdf'])	
-				path = os.path.join(root_Folder,data_object_dict['has_pdf'])
-				#print(path)
-				full_text = read_text_from_json(path,'pdf')
-				json_dicts.append(data_object_dict)
-
-			elif data_object_dict['has_pmc'] != '':
-
-				try:
-					#json_file_path = path_dict[data_object_dict['pmcid']]
-					path = os.path.join(root_Folder,data_object_dict['has_pmc'])
-					full_text = read_text_from_json(path,'pmc')
+					#json_file_path = path_dict[data_object_dict['sha']]
+					if ';' in data_object_dict['has_pdf']:
+						data_object_dict['has_pdf'] = data_object_dict['has_pdf'].split('; ')[1]
+					path = os.path.join(root_Folder,data_object_dict['has_pdf'])
+					full_text = read_text_from_json(path,'pdf')
 					json_dicts.append(data_object_dict)
-				except:
-					pass
 
-		sections,body,ref_texts = full_text
-		f_t = abstract + ' '+ title +' '+ sections+' '+body+' '+ref_texts
-		data_dict[idx] = {'abstract':abstract,'title':title,'fulltext':f_t}
+				elif 'document_parses' in data_object_dict['has_pmc']:
+
+					try:
+						#json_file_path = path_dict[data_object_dict['pmcid']]
+						path = os.path.join(root_Folder,data_object_dict['has_pmc'])
+						full_text = read_text_from_json(path,'pmc')
+						json_dicts.append(data_object_dict)
+					except:
+						pass
+
+			sections,body,ref_texts = full_text
+			f_t = abstract + ' '+ title +' '+ sections+' '+body+' '+ref_texts
+			data_dict[idx] = {'abstract':abstract,'title':title,'fulltext':f_t}
 	
 	return(data_dict)
 
@@ -251,14 +250,14 @@ def get_data():
 					#title_abstract = title+' '+abstract
 					full_text = full_text.split(' ')
 					num_of_divs = len(full_text)//300
-					topic_token = tokenizer.tokenize(topic)
+					topic_token = TOKENIZER.tokenize(topic)
 					
 					for i in range(num_of_divs):
 						start = i * 300
 						end = start+300
 						txt = full_text[start:end]
 						txt = ' '.join(txt)
-						txt_token = tokenizer.tokenize(txt)		
+						txt_token = TOKENIZER.tokenize(txt)		
 						if len(txt_token)+len(topic_token) <= 509:
 							gc.disable()
 							data.append([topic_token,txt_token,class_])
